@@ -1,0 +1,23 @@
+<style>
+	.completed{
+		color : red;
+		text-decoration: line-through;;
+		font-style: italic;
+		font-weight: bold;
+	}
+</style>
+<h1>Todo Manager</h1>
+<hr>
+<ol>
+	{{#each list}}
+		<li>
+			{{#if this.isCompleted}}
+				<span class="completed">{{this.name}}</span>
+			{{else}}
+				<span>{{this.name}}</span>
+			{{/if}}
+			
+		<span><a href="/todos/toggle/{{this.id}}">X</a></span></li>
+	{{/each}}
+</ol>
+<a href="/todos/new">Create New</a>
