@@ -7,7 +7,7 @@ function isStatic(resourcePath){
 	return staticResExtns.indexOf(path.extname(resourcePath)) !== -1;
 }
 
-module.exports = function(req, res){
+module.exports = function(req, res, next){
 	if (isStatic(req.urlData.pathname)){
 		var resourcePath = path.join(__dirname, req.urlData.pathname);
 		if (!fs.existsSync(resourcePath)){
@@ -15,8 +15,8 @@ module.exports = function(req, res){
 			res.end();
 			return;
 		}
-		//fs.createReadStream(resourcePath, {encoding : 'utf8'}).pipe(res);
-		var stream = fs.createReadStream(resourcePath, {encoding : 'utf8'});
+		fs.createReadStream(resourcePath, {encoding : 'utf8'}).pipe(res);
+		/*var stream = fs.createReadStream(resourcePath, {encoding : 'utf8'});
 		stream.on('data', function(chunk){
 			console.log('[serveStatic - data event] - writing data to the res stream');
 			res.write(chunk);
@@ -24,6 +24,8 @@ module.exports = function(req, res){
 		stream.on('end', function(){
 			console.log('[serveStatic - end event] - finished writing data to the res stream');
 			res.end();
-		});
+		});*/
+	} else {
+		next();
 	}
 }
