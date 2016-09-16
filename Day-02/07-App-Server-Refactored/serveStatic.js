@@ -15,6 +15,15 @@ module.exports = function(req, res){
 			res.end();
 			return;
 		}
-		fs.createReadStream(resourcePath, {encoding : 'utf8'}).pipe(res);
+		//fs.createReadStream(resourcePath, {encoding : 'utf8'}).pipe(res);
+		var stream = fs.createReadStream(resourcePath, {encoding : 'utf8'});
+		stream.on('data', function(chunk){
+			console.log('[serveStatic - data event] - writing data to the res stream');
+			res.write(chunk);
+		});
+		stream.on('end', function(){
+			console.log('[serveStatic - end event] - finished writing data to the res stream');
+			res.end();
+		});
 	}
 }
